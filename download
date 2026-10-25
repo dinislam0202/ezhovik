@@ -1,0 +1,67 @@
+export const site = {
+  name: "Ежовик и наука",
+  tagline: "Гриб, который заставил науку задать новые вопросы",
+  description:
+    "Независимое научно-популярное издание о ежовике гребенчатом (Hericium erinaceus): биология, химический состав, исследования и их ограничения.",
+  /** Задайте NEXT_PUBLIC_SITE_URL в окружении при деплое (см. README). */
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(
+    /\/$/,
+    "",
+  ),
+  locale: "ru_RU",
+  language: "ru",
+  /** Дата последнего крупного обновления контента (для sitemap) */
+  contentUpdated: "2026-10-25",
+  /** Необязательно: если указать, адрес появится на странице «О проекте» */
+  contactEmail: "" as string,
+};
+
+export function absoluteUrl(path = "/"): string {
+  return `${site.url}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+export const disclaimer =
+  "Материалы сайта предназначены для образования и не заменяют консультацию врача. Не начинайте и не прекращайте приём лекарств и добавок без обсуждения со специалистом.";
+
+export const scienceDatabases = [
+  {
+    name: "PubMed",
+    url: "https://pubmed.ncbi.nlm.nih.gov/",
+    note: "Библиографическая база биомедицинских публикаций (NLM, США)",
+  },
+  {
+    name: "PubMed Central",
+    url: "https://pmc.ncbi.nlm.nih.gov/",
+    note: "Архив полнотекстовых статей в открытом доступе",
+  },
+  {
+    name: "Europe PMC",
+    url: "https://europepmc.org/",
+    note: "Европейский аналог с поиском по полным текстам",
+  },
+  {
+    name: "ClinicalTrials.gov",
+    url: "https://clinicaltrials.gov/",
+    note: "Реестр клинических исследований: протоколы и заявленные исходы",
+  },
+  {
+    name: "PROSPERO",
+    url: "https://www.crd.york.ac.uk/prospero/",
+    note: "Реестр протоколов систематических обзоров",
+  },
+  {
+    name: "Cochrane Library",
+    url: "https://www.cochranelibrary.com/",
+    note: "Систематические обзоры в здравоохранении",
+  },
+  {
+    name: "Index Fungorum",
+    url: "https://www.indexfungorum.org/",
+    note: "Номенклатура и систематика грибов",
+  },
+  {
+    name: "MycoBank",
+    url: "https://www.mycobank.org/",
+    note: "База данных названий и описаний грибов",
+  },
+];

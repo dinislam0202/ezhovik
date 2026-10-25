@@ -1,0 +1,120 @@
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { LibrarySearch } from "@/components/LibrarySearch";
+import { articles } from "@/data/articles";
+import { glossary } from "@/data/glossary";
+import { research } from "@/data/research";
+import { scienceDatabases } from "@/data/site";
+import { topics } from "@/data/topics";
+import { buildLibraryIndex } from "@/lib/library-index";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Библиотека: статьи, исследования, словарь и научные базы",
+  description:
+    "Библиотека о ежовике гребенчатом: все статьи, каталог исследований, словарь терминов, тематические подборки и ссылки на надёжные научные базы. Полнотекстовый поиск.",
+  path: "/library",
+});
+
+export default function LibraryPage() {
+  const docs = buildLibraryIndex();
+  return (
+    <div className="wrap py-12 md:py-16">
+      <Breadcrumbs items={[{ name: "Библиотека", path: "/library" }]} />
+      <h1 className="mt-8 max-w-3xl font-serif text-5xl font-semibold md:text-6xl">Библиотека</h1>
+      <p className="mt-5 max-w-2xl font-serif text-xl leading-relaxed text-muted">
+        Статьи, обзоры, каталог исследований и словарь в одном месте. Поиск идёт по
+        названиям, аннотациям, ключевым словам и текстам.
+      </p>
+
+      <div className="mt-10">
+        <LibrarySearch docs={docs} />
+      </div>
+
+      <div className="mt-20 grid gap-12 md:grid-cols-2">
+        <section aria-labelledby="topics-t">
+          <h2 id="topics-t" className="border-t border-ink pt-4 font-serif text-3xl font-semibold">
+            Подборки по темам
+          </h2>
+          <ul className="mt-5 space-y-3">
+            {topics.map((t) => (
+              <li key={t.slug}>
+                <Link href={`/topics/${t.slug}`} className="font-serif text-xl">
+                  {t.title}
+                </Link>
+                <span className="block font-sans text-sm text-muted">{t.card}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section aria-labelledby="dict-t">
+          <h2 id="dict-t" className="border-t border-ink pt-4 font-serif text-3xl font-semibold">
+            Словарь терминов
+          </h2>
+          <ul className="mt-5 grid gap-x-6 gap-y-2 font-sans sm:grid-cols-2">
+            {glossary.map((g) => (
+              <li key={g.slug}>
+                <Link href={`/glossary/${g.slug}`}>{g.term}</Link>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 font-sans text-sm">
+            <Link href="/glossary">Весь словарь →</Link>
+          </p>
+        </section>
+        <section aria-labelledby="all-t" className="md:col-span-2">
+          <h2 id="all-t" className="border-t border-ink pt-4 font-serif text-3xl font-semibold">
+            Все материалы
+          </h2>
+          <div className="mt-5 grid gap-8 md:grid-cols-2">
+            <div>
+              <h3 className="kicker text-forest">Статьи ({articles.length})</h3>
+              <ul className="mt-3 space-y-2 font-sans text-sm">
+                {articles.map((a) => (
+                  <li key={a.slug}>
+                    <Link href={`/articles/${a.slug}`}>{a.title}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="kicker text-forest">Каталог исследований ({research.length})</h3>
+              <ul className="mt-3 space-y-2 font-sans text-sm">
+                {research.map((r) => (
+                  <li key={r.id}>
+                    <Link href={`/research/${r.id}`}>{r.titleRu}</Link>{" "}
+                    <span className="text-muted">({r.year})</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section aria-labelledby="db-t" className="md:col-span-2">
+          <h2 id="db-t" className="border-t border-ink pt-4 font-serif text-3xl font-semibold">
+            Надёжные научные базы
+          </h2>
+          <p className="mt-3 max-w-2xl font-sans text-sm text-muted">
+            Проверяйте наши ссылки и ищите новые работы самостоятельно. Подключение этих баз
+            для автоматического обновления каталога пока не реализовано: см. README.
+          </p>
+          <ul className="mt-5 grid gap-px border border-ink bg-ink sm:grid-cols-2 lg:grid-cols-4">
+            {scienceDatabases.map((d) => (
+              <li key={d.name} className="bg-paper p-5">
+                <a
+                  href={d.url}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  className="font-serif text-xl font-semibold"
+                >
+                  {d.name}
+                </a>
+                <p className="mt-2 font-sans text-sm text-muted">{d.note}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+    </div>
+  );
+}
